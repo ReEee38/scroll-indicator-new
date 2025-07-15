@@ -171,6 +171,8 @@
   </div>
   
   <script>
+    let isScrolling = false;
+    
     function scrollToActiveItem(activeElement) {
       const container = document.getElementById('scrollContainer');
       const containerWidth = container.offsetWidth;
@@ -185,23 +187,35 @@
     }
     
     function updateIndicators() {
+      if (isScrolling) return;
+      
       try {
         const parentDocument = window.parent.document;
         const sections = parentDocument.querySelectorAll('[id^="section"]');
         const indicators = document.querySelectorAll('.indicator');
         
-        if (sections.length === 0) return;
+        if (sections.length === 0) {
+          console.log('No sections found');
+          return;
+        }
         
         let current = 'section1';
         const scrollY = window.parent.scrollY;
         const windowHeight = window.parent.innerHeight;
         
+        // より正確なセクション検出
         sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          if (scrollY >= sectionTop - windowHeight / 2) {
+          const rect = section.getBoundingClientRect();
+          const sectionTop = rect.top + scrollY;
+          const sectionHeight = rect.height;
+          
+          // セクションが画面の上部3分の1に来た時にアクティブにする
+          if (scrollY >= sectionTop - windowHeight / 3) {
             current = section.getAttribute('id');
           }
         });
+        
+        console.log('Current section:', current);
         
         // すべてのインジケーターからactiveクラスを削除
         indicators.forEach(indicator => {
@@ -216,35 +230,66 @@
         }
         
       } catch (error) {
-        console.log('Cross-origin access might be restricted');
+        console.log('Error in updateIndicators:', error);
       }
+    }
+    
+    // スロットリング機能付きスクロールイベント
+    let scrollTimeout;
+    function handleScroll() {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateIndicators, 50);
     }
     
     // クリックイベントを追加
     document.querySelectorAll('.indicator').forEach(indicator => {
       indicator.addEventListener('click', () => {
+        isScrolling = true;
+        
         try {
           const targetId = indicator.getAttribute('data-target');
           const targetSection = window.parent.document.getElementById(targetId);
           
           if (targetSection) {
+            // 手動でアクティブ状態を更新
+            document.querySelectorAll('.indicator').forEach(ind => {
+              ind.classList.remove('active');
+            });
+            indicator.classList.add('active');
+            scrollToActiveItem(indicator);
+            
+            // スクロール実行
             window.parent.scrollTo({
               top: targetSection.offsetTop,
               behavior: 'smooth'
             });
+            
+            // スクロール完了後にフラグをリセット
+            setTimeout(() => {
+              isScrolling = false;
+            }, 1000);
           }
         } catch (error) {
-          console.log('Cross-origin access might be restricted');
+          console.log('Error in click handler:', error);
+          isScrolling = false;
         }
       });
     });
     
+    // 初期化とイベントリスナー
     if (window.parent) {
-      window.parent.addEventListener('scroll', updateIndicators);
+      window.parent.addEventListener('scroll', handleScroll);
       window.parent.addEventListener('resize', updateIndicators);
     }
     
-    setTimeout(updateIndicators, 500);
+    // 初期化
+    setTimeout(() => {
+      updateIndicators();
+      console.log('Initialized');
+    }, 1000);
+    
+    // 定期的なチェック（デバッグ用）
+    setInterval(updateIndicators, 2000);
   </script>
 </body>
 </html>
