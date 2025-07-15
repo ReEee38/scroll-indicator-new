@@ -62,18 +62,22 @@
       white-space: nowrap;
       min-width: 70px;
       flex-shrink: 0;
+      position: relative;
+      border-bottom: 2px solid transparent;
     }
     
     .indicator.active {
       color: #09328f;
-      background: rgba(9, 50, 143, 0.1);
+      background: transparent;
       transform: scale(1.05);
+      border-bottom: 2px solid #09328f;
     }
     
     .indicator:hover {
       transform: scale(1.02);
       color: #09328f;
-      background: rgba(9, 50, 143, 0.05);
+      background: transparent;
+      border-bottom: 2px solid rgba(9, 50, 143, 0.3);
     }
     
     @media (max-width: 768px) {
@@ -89,6 +93,13 @@
         padding: 5px 10px;
         min-width: 55px;
         border-radius: 16px;
+        border-bottom: 2px solid transparent;
+      }
+      .indicator.active {
+        border-bottom: 2px solid #09328f;
+      }
+      .indicator:hover {
+        border-bottom: 2px solid rgba(9, 50, 143, 0.3);
       }
       .scroll-container {
         gap: 12px;
@@ -108,6 +119,13 @@
         padding: 4px 8px;
         min-width: 45px;
         border-radius: 14px;
+        border-bottom: 2px solid transparent;
+      }
+      .indicator.active {
+        border-bottom: 2px solid #09328f;
+      }
+      .indicator:hover {
+        border-bottom: 2px solid rgba(9, 50, 143, 0.3);
       }
       .scroll-container {
         gap: 8px;
