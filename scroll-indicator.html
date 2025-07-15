@@ -53,7 +53,6 @@
       padding: 6px 12px;
       cursor: pointer;
       transition: all 0.3s ease;
-      border-radius: 20px;
       font-size: 11px;
       font-weight: bold;
       color: #b5c1dd;
@@ -63,21 +62,41 @@
       min-width: 70px;
       flex-shrink: 0;
       position: relative;
-      border-bottom: 2px solid transparent;
+      border: none;
+      border-radius: 0;
+    }
+    
+    .indicator::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: #09328f;
+      transition: width 0.3s ease;
     }
     
     .indicator.active {
       color: #09328f;
       background: transparent;
       transform: scale(1.05);
-      border-bottom: 2px solid #09328f;
+    }
+    
+    .indicator.active::after {
+      width: 80%;
     }
     
     .indicator:hover {
       transform: scale(1.02);
       color: #09328f;
       background: transparent;
-      border-bottom: 2px solid rgba(9, 50, 143, 0.3);
+    }
+    
+    .indicator:hover::after {
+      width: 60%;
+      background: rgba(9, 50, 143, 0.5);
     }
     
     @media (max-width: 768px) {
@@ -92,14 +111,15 @@
         font-size: 10px;
         padding: 5px 10px;
         min-width: 55px;
-        border-radius: 16px;
-        border-bottom: 2px solid transparent;
       }
-      .indicator.active {
-        border-bottom: 2px solid #09328f;
+      .indicator::after {
+        height: 2px;
       }
-      .indicator:hover {
-        border-bottom: 2px solid rgba(9, 50, 143, 0.3);
+      .indicator.active::after {
+        width: 75%;
+      }
+      .indicator:hover::after {
+        width: 55%;
       }
       .scroll-container {
         gap: 12px;
@@ -118,14 +138,15 @@
         font-size: 9px;
         padding: 4px 8px;
         min-width: 45px;
-        border-radius: 14px;
-        border-bottom: 2px solid transparent;
       }
-      .indicator.active {
-        border-bottom: 2px solid #09328f;
+      .indicator::after {
+        height: 2px;
       }
-      .indicator:hover {
-        border-bottom: 2px solid rgba(9, 50, 143, 0.3);
+      .indicator.active::after {
+        width: 70%;
+      }
+      .indicator:hover::after {
+        width: 50%;
       }
       .scroll-container {
         gap: 8px;
