@@ -8,17 +8,31 @@
       margin: 0;
       padding: 0;
       background: transparent;
+      height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    
+    .scroll-container {
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      gap: 8px;
+      justify-content: flex-start;
+      height: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      gap: 16px;
+      padding: 0 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .scroll-container::-webkit-scrollbar {
+      display: none;
     }
     
     .indicator {
-      padding: 8px 12px;
+      padding: 8px 16px;
       cursor: pointer;
       transition: all 0.3s ease;
       border-radius: 4px;
@@ -28,54 +42,74 @@
       background: transparent;
       text-align: center;
       white-space: nowrap;
-      min-width: 50px;
+      min-width: 80px;
+      flex-shrink: 0;
     }
     
     .indicator.active {
       color: #09328f;
       background: transparent;
-      transform: scale(1.05);
+      transform: scale(1.1);
     }
     
     .indicator:hover {
-      transform: scale(1.02);
+      transform: scale(1.05);
       color: #09328f;
     }
     
     @media (max-width: 768px) {
       .indicator {
         font-size: 10px;
-        padding: 6px 8px;
-        min-width: 40px;
+        padding: 6px 12px;
+        min-width: 60px;
       }
-      body {
-        gap: 4px;
+      .scroll-container {
+        gap: 12px;
+        padding: 0 15px;
       }
     }
     
     @media (max-width: 480px) {
       .indicator {
-        font-size: 8px;
-        padding: 4px 6px;
-        min-width: 30px;
+        font-size: 9px;
+        padding: 4px 8px;
+        min-width: 50px;
       }
-      body {
-        gap: 2px;
+      .scroll-container {
+        gap: 8px;
+        padding: 0 10px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="indicator active" data-target="section1">取引先一覧</div>
-  <div class="indicator" data-target="section2">なぜ安いの？</div>
-  <div class="indicator" data-target="section3">お届けの流れ</div>
-  <div class="indicator" data-target="section4">代表ご挨拶</div>
-  <div class="indicator" data-target="section5">仕入れ情報</div>
-  <div class="indicator" data-target="section6">よくある質問</div>
-  <div class="indicator" data-target="section7">お問い合わせ</div>
-  <div class="indicator" data-target="section8">会社概要</div>
+  <div class="scroll-container" id="scrollContainer">
+    <div class="indicator active" data-target="section1">取引先一覧</div>
+    <div class="indicator" data-target="section2">なぜ安いの？</div>
+    <div class="indicator" data-target="section3">お届けの流れ</div>
+    <div class="indicator" data-target="section4">代表ご挨拶</div>
+    <div class="indicator" data-target="section5">仕入れ情報</div>
+    <div class="indicator" data-target="section6">よくある質問</div>
+    <div class="indicator" data-target="section7">お問い合わせ</div>
+    <div class="indicator" data-target="section8">会社概要</div>
+  </div>
   
   <script>
+    function scrollToActiveItem(activeElement) {
+      const container = document.getElementById('scrollContainer');
+      const containerWidth = container.offsetWidth;
+      const itemLeft = activeElement.offsetLeft;
+      const itemWidth = activeElement.offsetWidth;
+      
+      // アクティブ項目を中央に表示するためのスクロール位置を計算
+      const scrollLeft = itemLeft - (containerWidth / 2) + (itemWidth / 2);
+      
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+    }
+    
     function updateIndicators() {
       try {
         const parentDocument = window.parent.document;
@@ -95,17 +129,24 @@
           }
         });
         
+        // すべてのインジケーターからactiveクラスを削除
         indicators.forEach(indicator => {
           indicator.classList.remove('active');
-          if (indicator.getAttribute('data-target') === current) {
-            indicator.classList.add('active');
-          }
         });
+        
+        // 現在のセクションに対応するインジケーターをアクティブに
+        const activeIndicator = document.querySelector(`[data-target="${current}"]`);
+        if (activeIndicator) {
+          activeIndicator.classList.add('active');
+          scrollToActiveItem(activeIndicator);
+        }
+        
       } catch (error) {
         console.log('Cross-origin access might be restricted');
       }
     }
     
+    // クリックイベントを追加
     document.querySelectorAll('.indicator').forEach(indicator => {
       indicator.addEventListener('click', () => {
         try {
