@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    
+    .indicator {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      margin: 12px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .indicator.active {
+      background: #ff6b35;
+      transform: scale(1.4);
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    }
+    
+    .indicator:hover {
+      transform: scale(1.2);
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    @media (max-width: 768px) {
+      .indicator {
+        width: 12px;
+        height: 12px;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="indicator active" data-target="section1"></div>
+  <div class="indicator" data-target="section2"></div>
+  <div class="indicator" data-target="section3"></div>
+  <div class="indicator" data-target="section4"></div>
+  
+  <script>
+    function updateIndicators() {
+      try {
+        const parentDocument = window.parent.document;
+        const sections = parentDocument.querySelectorAll('[id^="section"]');
+        const indicators = document.querySelectorAll('.indicator');
+        
+        if (sections.length === 0) return;
+        
+        let current = 'section1';
+        const scrollY = window.parent.scrollY;
+        const windowHeight = window.parent.innerHeight;
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          if (scrollY >= sectionTop - windowHeight / 2) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        indicators.forEach(indicator => {
+          indicator.classList.remove('active');
+          if (indicator.getAttribute('data-target') === current) {
+            indicator.classList.add('active');
+          }
+        });
+      } catch (error) {
+        console.log('Cross-origin access might be restricted');
+      }
+    }
+    
+    document.querySelectorAll('.indicator').forEach(indicator => {
+      indicator.addEventListener('click', () => {
+        try {
+          const targetId = indicator.getAttribute('data-target');
+          const targetSection = window.parent.document.getElementById(targetId);
+          
+          if (targetSection) {
+            window.parent.scrollTo({
+              top: targetSection.offsetTop,
+              behavior: 'smooth'
+            });
+          }
+        } catch (error) {
+          console.log('Cross-origin access might be restricted');
+        }
+      });
+    });
+    
+    if (window.parent) {
+      window.parent.addEventListener('scroll', updateIndicators);
+      window.parent.addEventListener('resize', updateIndicators);
+    }
+    
+    setTimeout(updateIndicators, 500);
+  </script>
+</body>
+</html>
