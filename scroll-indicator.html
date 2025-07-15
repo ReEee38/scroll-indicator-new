@@ -18,13 +18,13 @@
     .menu-container {
       background: #ffffff;
       border-radius: 50px;
-      padding: 12px 20px;
+      padding: 12px 25px;
       border: 2px solid #1a2c52;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       position: relative;
       width: 100%;
-      max-width: 400px;
+      max-width: 600px;
       height: 50px;
       display: flex;
       align-items: center;
@@ -39,8 +39,8 @@
       overflow-x: hidden;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      gap: 16px;
-      padding: 0 10px;
+      gap: 20px;
+      padding: 0 15px;
       transition: transform 0.3s ease;
       width: 100%;
     }
@@ -50,7 +50,7 @@
     }
     
     .indicator {
-      padding: 6px 12px;
+      padding: 6px 16px;
       cursor: pointer;
       transition: all 0.3s ease;
       font-size: 11px;
@@ -59,7 +59,7 @@
       background: transparent;
       text-align: center;
       white-space: nowrap;
-      min-width: 70px;
+      min-width: 80px;
       flex-shrink: 0;
       position: relative;
       border: none;
@@ -101,16 +101,16 @@
     
     @media (max-width: 768px) {
       .menu-container {
-        max-width: 300px;
+        max-width: 450px;
         height: 40px;
-        padding: 10px 16px;
+        padding: 10px 20px;
         border-width: 2px;
         border-radius: 40px;
       }
       .indicator {
         font-size: 10px;
-        padding: 5px 10px;
-        min-width: 55px;
+        padding: 5px 12px;
+        min-width: 65px;
       }
       .indicator::after {
         height: 2px;
@@ -122,22 +122,23 @@
         width: 55%;
       }
       .scroll-container {
-        gap: 12px;
+        gap: 16px;
+        padding: 0 12px;
       }
     }
     
     @media (max-width: 480px) {
       .menu-container {
-        max-width: 250px;
+        max-width: 350px;
         height: 35px;
-        padding: 8px 12px;
+        padding: 8px 16px;
         border-width: 2px;
         border-radius: 35px;
       }
       .indicator {
         font-size: 9px;
-        padding: 4px 8px;
-        min-width: 45px;
+        padding: 4px 10px;
+        min-width: 55px;
       }
       .indicator::after {
         height: 2px;
@@ -149,7 +150,8 @@
         width: 50%;
       }
       .scroll-container {
-        gap: 8px;
+        gap: 12px;
+        padding: 0 10px;
       }
     }
   </style>
