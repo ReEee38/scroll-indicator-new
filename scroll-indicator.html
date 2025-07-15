@@ -9,8 +9,25 @@
       padding: 0;
       background: transparent;
       height: 100vh;
-      overflow: hidden;
       font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .menu-container {
+      background: #ffffff;
+      border-radius: 50%;
+      padding: 12px 20px;
+      border: 2px solid #1a2c52;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 50px;
+      display: flex;
+      align-items: center;
     }
     
     .scroll-container {
@@ -19,12 +36,13 @@
       align-items: center;
       justify-content: flex-start;
       height: 100%;
-      overflow-x: auto;
+      overflow-x: hidden;
       scrollbar-width: none;
       -ms-overflow-style: none;
       gap: 16px;
-      padding: 0 20px;
+      padding: 0 10px;
       transition: transform 0.3s ease;
+      width: 100%;
     }
     
     .scroll-container::-webkit-scrollbar {
@@ -32,66 +50,79 @@
     }
     
     .indicator {
-      padding: 8px 16px;
+      padding: 6px 12px;
       cursor: pointer;
       transition: all 0.3s ease;
-      border-radius: 4px;
-      font-size: 12px;
+      border-radius: 25px;
+      font-size: 11px;
       font-weight: bold;
       color: #b5c1dd;
       background: transparent;
       text-align: center;
       white-space: nowrap;
-      min-width: 80px;
+      min-width: 70px;
       flex-shrink: 0;
     }
     
     .indicator.active {
       color: #09328f;
-      background: transparent;
-      transform: scale(1.1);
+      background: rgba(9, 50, 143, 0.1);
+      transform: scale(1.05);
     }
     
     .indicator:hover {
-      transform: scale(1.05);
+      transform: scale(1.02);
       color: #09328f;
+      background: rgba(9, 50, 143, 0.05);
     }
     
     @media (max-width: 768px) {
+      .menu-container {
+        max-width: 300px;
+        height: 40px;
+        padding: 10px 16px;
+        border-width: 2px;
+      }
       .indicator {
         font-size: 10px;
-        padding: 6px 12px;
-        min-width: 60px;
+        padding: 5px 10px;
+        min-width: 55px;
       }
       .scroll-container {
         gap: 12px;
-        padding: 0 15px;
       }
     }
     
     @media (max-width: 480px) {
+      .menu-container {
+        max-width: 250px;
+        height: 35px;
+        padding: 8px 12px;
+        border-width: 2px;
+      }
       .indicator {
         font-size: 9px;
         padding: 4px 8px;
-        min-width: 50px;
+        min-width: 45px;
       }
       .scroll-container {
         gap: 8px;
-        padding: 0 10px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="scroll-container" id="scrollContainer">
-    <div class="indicator active" data-target="section1">取引先一覧</div>
-    <div class="indicator" data-target="section2">なぜ安いの？</div>
-    <div class="indicator" data-target="section3">お届けの流れ</div>
-    <div class="indicator" data-target="section4">代表ご挨拶</div>
-    <div class="indicator" data-target="section5">仕入れ情報</div>
-    <div class="indicator" data-target="section6">よくある質問</div>
-    <div class="indicator" data-target="section7">お問い合わせ</div>
-    <div class="indicator" data-target="section8">会社概要</div>
+  <div class="menu-container">
+    <div class="scroll-container" id="scrollContainer">
+      <div class="indicator active" data-target="section1">取引先一覧</div>
+      <div class="indicator" data-target="section2">なぜ安いの？</div>
+      <div class="indicator" data-target="section3">お届けの流れ</div>
+      <div class="indicator" data-target="section4">代表ご挨拶</div>
+      <div class="indicator" data-target="section5">仕入れ情報</div>
+      <div class="indicator" data-target="section6">よくある質問</div>
+      <div class="indicator" data-target="section7">お問い合わせ</div>
+      <div class="indicator" data-target="section8">会社概要</div>
+    </div>
   </div>
   
   <script>
@@ -104,10 +135,8 @@
       // アクティブ項目を中央に表示するためのスクロール位置を計算
       const scrollLeft = itemLeft - (containerWidth / 2) + (itemWidth / 2);
       
-      container.scrollTo({
-        left: scrollLeft,
-        behavior: 'smooth'
-      });
+      // スムーズなスクロールアニメーション
+      container.style.transform = `translateX(-${Math.max(0, scrollLeft)}px)`;
     }
     
     function updateIndicators() {
