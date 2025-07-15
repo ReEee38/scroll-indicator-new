@@ -9,50 +9,71 @@
       padding: 0;
       background: transparent;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
       height: 100vh;
       font-family: Arial, sans-serif;
+      gap: 8px;
     }
     
     .indicator {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.6);
-      margin: 12px 0;
+      padding: 8px 12px;
       cursor: pointer;
       transition: all 0.3s ease;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #b5c1dd;
+      background: transparent;
+      text-align: center;
+      white-space: nowrap;
+      min-width: 50px;
     }
     
     .indicator.active {
-      background: #ff6b35;
-      transform: scale(1.4);
-      border-color: #fff;
-      box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+      color: #09328f;
+      background: transparent;
+      transform: scale(1.05);
     }
     
     .indicator:hover {
-      transform: scale(1.2);
-      background: rgba(255, 255, 255, 0.8);
+      transform: scale(1.02);
+      color: #09328f;
     }
     
     @media (max-width: 768px) {
       .indicator {
-        width: 12px;
-        height: 12px;
-        margin: 10px 0;
+        font-size: 10px;
+        padding: 6px 8px;
+        min-width: 40px;
+      }
+      body {
+        gap: 4px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .indicator {
+        font-size: 8px;
+        padding: 4px 6px;
+        min-width: 30px;
+      }
+      body {
+        gap: 2px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="indicator active" data-target="section1"></div>
-  <div class="indicator" data-target="section2"></div>
-  <div class="indicator" data-target="section3"></div>
-  <div class="indicator" data-target="section4"></div>
+  <div class="indicator active" data-target="section1">取引先一覧</div>
+  <div class="indicator" data-target="section2">なぜ安いの？</div>
+  <div class="indicator" data-target="section3">お届けの流れ</div>
+  <div class="indicator" data-target="section4">代表ご挨拶</div>
+  <div class="indicator" data-target="section5">仕入れ情報</div>
+  <div class="indicator" data-target="section6">よくある質問</div>
+  <div class="indicator" data-target="section7">お問い合わせ</div>
+  <div class="indicator" data-target="section8">会社概要</div>
   
   <script>
     function updateIndicators() {
